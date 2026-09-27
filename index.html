@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>QUESTION ARCHIVE</title>
+<meta name="description" content="أرشيف الأسئلة والإجابات والشروحات">
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="passwordGate" class="password-gate" aria-modal="true" role="dialog">
+  <div class="password-card">
+    <div class="password-logo">QA</div>
+    <span class="password-kicker">PRIVATE ACCESS</span>
+    <h1>مرحباً بك</h1>
+    <p>أدخل رمز الدخول للوصول إلى الأرشيف.</p>
+    <form id="passwordForm" autocomplete="off">
+      <div class="password-input-wrap">
+        <span>⌁</span>
+        <input id="sitePassword" type="password" inputmode="numeric" placeholder="رمز الدخول" maxlength="20" required>
+      </div>
+      <button type="submit" class="password-submit">دخول إلى الموقع <b>←</b></button>
+      <small id="passwordError"></small>
+    </form>
+  </div>
+</div>
+<div class="film-grain"></div><div id="bubbles" class="bubbles"></div>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="#home"><span class="brand-mark">QA</span><span><strong>QUESTION</strong><small>ARCHIVE</small></span></a>
+    <div class="nav-tools"><button id="languageToggle" class="language-toggle" type="button">EN</button><button id="menuToggle" class="menu-toggle" type="button" aria-expanded="false">☰</button></div>
+    <nav class="main-nav" id="mainNav">
+      <a href="#home" data-i18n="HOME">الرئيسية</a><a href="#questions" data-i18n="QUESTIONS">الأسئلة</a><a href="#chapters" data-i18n="CHAPTERS">الفصول</a><a href="#contact" data-i18n="CONTACT">تواصل معنا</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+<section class="hero">
+ <div class="container hero-grid">
+  <div class="hero-copy">
+   <div class="hero-kicker"><span></span><span data-i18n="CASE_FILE">ملف رقم 001 · الأرشيف التعليمي</span></div>
+   <h1>QUESTION<br><em>ARCHIVE</em></h1>
+   <p class="hero-lead" data-i18n="HERO_LEAD">مكان للأسئلة،<br>الإجابات والشروحات.</p>
+   <p class="hero-description" data-i18n="HERO_DESC">أرشيف تعليمي شخصي مرتب علشان تراجع أسئلتك بسرعة ومن غير زحمة.</p>
+   <a class="btn btn-gold" href="#questions"><span data-i18n="EXPLORE">استكشف الأسئلة</span><b>↙</b></a>
+  </div>
+  <div class="hero-file">
+   <div class="file-card"><div class="file-top"><span>ARCHIVE FILE</span><span>NO. 001</span></div><div class="file-seal">QA</div><div class="file-stamp">OPEN<br>ARCHIVE</div><div class="file-lines"><span>QUESTIONS</span><i></i><span>ANSWERS</span><i></i><span>EXPLANATIONS</span><i></i><span>REFERENCE</span><i></i></div><div class="file-bottom">EST. 2026 · PRIVATE STUDY ARCHIVE</div></div>
+  </div>
+ </div>
+</section>
+
+<section class="stats"><div class="container stats-grid">
+ <article><strong id="totalQuestions">0</strong><span data-i18n="TOTAL_QUESTIONS">إجمالي الأسئلة</span></article>
+ <article><strong id="totalChapters">0</strong><span data-i18n="TOTAL_CHAPTERS">إجمالي الفصول</span></article>
+ <article><strong id="totalCategories">0</strong><span data-i18n="TOTAL_CATEGORIES">إجمالي التصنيفات</span></article>
+</div></section>
+
+<section class="section questions-section" id="questions">
+ <div class="container">
+  <div class="section-heading"><div><p class="eyebrow" data-i18n="MAIN_FILES">THE MAIN FILES</p><h2 data-i18n="QUESTIONS">الأسئلة</h2></div><span class="section-number">01 / 04</span></div>
+  <div class="archive-toolbar">
+   <label class="search-box"><span>⌕</span><input id="searchInput" type="search" autocomplete="off" data-i18n-placeholder="SEARCH_PLACEHOLDER" placeholder="ابحث في الأسئلة..."></label>
+   <div class="filter-row"><select id="chapterFilter"><option value="">كل الفصول</option></select><select id="categoryFilter"><option value="">كل التصنيفات</option></select></div>
+  </div>
+  <div class="result-bar"><span id="resultCount">0</span><span data-i18n="RESULTS">نتيجة</span><button id="clearFilters" class="clear-btn" type="button" data-i18n="CLEAR_FILTERS">مسح الفلاتر</button></div>
+  <div id="questionsState" class="state-message">جاري تحميل الأسئلة...</div>
+  <div id="questionsGrid" class="questions-feed"></div>
+ </div>
+</section>
+
+  <!-- =====================================================
+     AI DEVELOPER
+===================================================== -->
+
+<section class="ai-section" id="ai">
+
+  <div class="ai-section-header">
+
+    <span class="ai-eyebrow">
+      AI DEVELOPER
+    </span>
+
+    <h2>
+      مساعد البرمجة
+    </h2>
+
+    <p>
+      اسأل عن البرمجة، الأكواد، الأخطاء، HTML، CSS،
+      JavaScript، Python، SQL، Supabase و n8n.
+    </p>
+
+  </div>
+
+
+  <div class="ai-chat-box">
+
+    <!-- HEADER -->
+
+    <div class="ai-chat-header">
+
+      <div class="ai-brand">
+
+        <div class="ai-status-dot"></div>
+
+        <div>
+          <strong>
+            AI DEVELOPER
+          </strong>
+
+          <span>
+            لايد اليمين لي معاذ 🙂😂
+          </span>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        id="aiNewChat"
+        class="ai-new-chat"
+      >
+        نبدا من لاول 😑
+      </button>
+
+    </div>
+
+
+    <!-- MESSAGES -->
+
+    <div
+      id="homeAiMessages"
+      class="ai-messages"
+    >
+
+      <div class="ai-message ai-message-bot">
+
+        <div class="ai-message-label">
+          AI DEVELOPER
+        </div>
+
+        <div class="ai-message-text">
+
+          اذيك ي قلب معاذ ..🫵🏻
+
+          <br><br>
+
+          أنا مساعد البرمجة الخاص بالمنصة.
+          ابعتلي أي سؤال متعلق بالبرمجة أو الكود
+          وأنا هساعدك فيه.
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- TYPING -->
+
+    <div
+      id="homeAiTyping"
+      class="ai-typing hidden"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+      <label>
+         استغفر ربك ونا هخلص 🤌🏻...
+      </label>
+
+    </div>
+
+
+    <!-- QUICK QUESTIONS -->
+
+    <div class="ai-quick-actions">
+
+      <button
+        type="button"
+        data-ai-home-prompt="اشرح لي HTML بطريقة بسيطة"
+      >
+        شرح HTML
+      </button>
+
+      <button
+        type="button"
+        data-ai-home-prompt="اشرح لي CSS للمبتدئين"
+      >
+        CSS
+      </button>
+
+      <button
+        type="button"
+        data-ai-home-prompt="اشرح لي JavaScript"
+      >
+        JavaScript
+      </button>
+
+      <button
+        type="button"
+        data-ai-home-prompt="ساعدني في حل مشكلة في الكود"
+      >
+        انا مش فاهم 🙂
+      </button>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="ai-composer">
+
+      <textarea
+        id="homeAiInput"
+        rows="1"
+        placeholder="اكتب سؤالك البرمجي هنا..."
+        autocomplete="off"
+      ></textarea>
+
+      <button
+        type="button"
+        id="homeAiSend"
+        class="ai-send-button"
+      >
+        ارسال
+      </button>
+
+      <button
+        type="button"
+        id="homeAiStop"
+        class="ai-stop-button hidden"
+      >
+        اصبر
+      </button>
+
+    </div>
+
+    <div class="ai-footer-note">
+      AI Developer — Powered by jane
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section chapters-section" id="chapters">
+ <div class="container"><div class="section-heading"><div><p class="eyebrow">INDEX OF FILES</p><h2 data-i18n="CHAPTERS">الفصول</h2></div><span class="section-number">02 / 04</span></div><div id="chaptersGrid" class="chapters-grid"></div></div>
+</section>
+
+<section class="section about-section"><div class="container about-grid"><div><p class="eyebrow" data-i18n="ABOUT">عن الأرشيف</p><h2 data-i18n="EVERY_QUESTION">كل سؤال<br>له ملف.</h2></div><p data-i18n="ABOUT_TEXT">كل سؤال بيتحفظ مع عنوانه وإجابته وشرحه وتصنيفه، ومعاه صورة أو فيديو لو متاح. الهدف إن المراجعة تبقى أسرع وأوضح.</p></div></section>
+
+<section class="section contact-section" id="contact"><div class="container contact-box"><div><p class="eyebrow" data-i18n="FINAL_NOTE">FINAL NOTE</p><h2 data-i18n="FOUND_PROBLEM">وجدت مشكلة؟</h2><p data-i18n="CONTACT_TEXT">لو لقيت خطأ في سؤال أو عندك مشكلة في المحتوى، تواصل معنا مباشرة.</p></div><div id="contactActions" class="contact-actions"><span class="state-message">جاري التحميل...</span></div></div></section>
+</main>
+
+<footer class="site-footer"><div class="container footer-grid"><div><strong>QUESTION ARCHIVE</strong><span id="footerText">© 2026 Question Archive</span></div><a href="#contact" data-i18n="CONTACT">تواصل معنا</a></div></footer>
+<a href="#ai" class="ai-float" aria-label="فتح مساعد AI">
+  <span class="ai-float-orb">AI</span>
+  <span class="ai-float-text">مساعد AI</span>
+</a>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="i18n.js"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>
