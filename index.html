@@ -1,871 +1,151 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-
-  <title>ADMIN — عالم الدراسة</title>
-
-  <meta
-    name="robots"
-    content="noindex,nofollow"
-  >
-
-  <link
-    rel="icon"
-    href="assets/images/favicon.svg"
-    type="image/svg+xml"
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-  <link
-    rel="stylesheet"
-    href="admin.css"
-  >
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>عالم الدراسة</title>
+<meta name="description" content="عالم الدراسة — منصة تعليمية للأسئلة والإجابات والشروحات.">
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-
-  <!-- =====================================================
-       BACKGROUND
-       ===================================================== -->
-
-  <div class="admin-bg">
-    <div id="adminBubbles"></div>
-  </div>
-
-
-  <!-- =====================================================
-       LOGIN
-       ===================================================== -->
-
-  <section
-    id="loginView"
-    class="auth-screen"
-  >
-
-    <form
-      id="loginForm"
-      class="auth-card"
-    >
-
-      <div class="auth-head">
-
-        <span class="auth-mark">
-          ع
-        </span>
-
-        <button
-          id="languageToggle"
-          class="language-toggle"
-          type="button"
-        >
-          EN
-        </button>
-
-      </div>
-
-
-      <p class="eyebrow">
-        عالم الدراسة · CONTROL ROOM
-      </p>
-
-
-      <h1>
-        لوحة الأدمن
-      </h1>
-
-
-      <p>
-        سجّل دخولك بحساب الأدمن من Supabase علشان تدخل لوحة التحكم.
-      </p>
-
-
-      <label>
-        Email
-
-        <input
-          id="loginEmail"
-          type="email"
-          autocomplete="username"
-          required
-        >
-
-      </label>
-
-
-      <label>
-        Password
-
-        <input
-          id="loginPassword"
-          type="password"
-          autocomplete="current-password"
-          required
-        >
-
-      </label>
-
-
-      <button
-        class="primary wide"
-        id="loginBtn"
-        type="submit"
-      >
-        دخول
-      </button>
-
-
-      <div
-        id="loginMessage"
-        class="form-message"
-      ></div>
-
-
-      <a
-        class="back-link"
-        href="index.html"
-      >
-        ← العودة للأرشيف
-      </a>
-
+<div id="passwordGate" class="password-gate" aria-modal="true" role="dialog">
+  <video id="lockBackgroundVideo" class="lock-background-video" autoplay muted loop playsinline></video>
+  <div class="lock-background-overlay"></div>
+  <div class="password-card">
+    <div class="password-mark">ع</div>
+    <span class="password-kicker">عالم الدراسة</span>
+    <h1>عالم الدراسة</h1>
+    <p>أدخل كلمة المرور للدخول.</p>
+    <form id="passwordForm">
+      <label for="sitePassword">كلمة المرور</label>
+      <input id="sitePassword" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" required>
+      <button type="submit">دخول</button>
+      <small id="passwordError" aria-live="polite"></small>
     </form>
+  </div>
+</div>
+<div class="film-grain"></div><div id="bubbles" class="bubbles"></div>
 
-  </section>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="#home"><span class="brand-mark">ع</span><span><strong>عالم الدراسة</strong><small>منصة الدراسة</small></span></a>
+    <div class="nav-tools"><button id="languageToggle" class="language-toggle" type="button">EN</button><button id="menuToggle" class="menu-toggle" type="button" aria-expanded="false">☰</button></div>
+    <nav class="main-nav" id="mainNav">
+      <a href="#home" data-i18n="HOME">الرئيسية</a><a href="#questions" data-i18n="QUESTIONS">الأسئلة</a><a href="#chapters" data-i18n="CHAPTERS">الفصول</a><a href="#contact" data-i18n="CONTACT">تواصل معنا</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+<section class="hero">
+ <div class="container hero-grid">
+  <div class="hero-copy">
+   <div class="hero-kicker"><span></span><span data-i18n="CASE_FILE">ملف رقم 001 · عالم الدراسة</span></div>
+   <h1>عالم<br><em>الدراسة</em></h1>
+   <p class="hero-lead" data-i18n="HERO_LEAD">مكان للأسئلة،<br>الإجابات والشروحات.</p>
+   <p class="hero-description" data-i18n="HERO_DESC">منصة تعليمية مرتبة علشان تراجع أسئلتك بسرعة ومن غير زحمة.</p>
+   <a class="btn btn-gold" href="#questions"><span data-i18n="EXPLORE">استكشف الأسئلة</span><b>↙</b></a>
+  </div>
+  <div class="hero-file">
+   <div class="file-card"><div class="file-top"><span>STUDY ARCHIVE</span><span>NO. 001</span></div><div class="file-seal">ع</div><div class="file-stamp">OPEN<br>ARCHIVE</div><div class="file-lines"><span>QUESTIONS</span><i></i><span>ANSWERS</span><i></i><span>EXPLANATIONS</span><i></i><span>REFERENCE</span><i></i></div><div class="file-bottom">EST. 2026 · عالم الدراسة</div></div>
+  </div>
+ </div>
+</section>
+
+<section class="stats"><div class="container stats-grid">
+ <article><strong id="totalQuestions">0</strong><span data-i18n="TOTAL_QUESTIONS">إجمالي الأسئلة</span></article>
+ <article><strong id="totalChapters">0</strong><span data-i18n="TOTAL_CHAPTERS">إجمالي الفصول</span></article>
+ <article><strong id="totalCategories">0</strong><span data-i18n="TOTAL_CATEGORIES">إجمالي التصنيفات</span></article>
+</div></section>
+
+<section class="section questions-section" id="questions">
+ <div class="container">
+  <div class="section-heading"><div><p class="eyebrow" data-i18n="MAIN_FILES">THE MAIN FILES</p><h2 data-i18n="QUESTIONS">الأسئلة</h2></div><span class="section-number">01 / 04</span></div>
+  <div class="archive-toolbar">
+   <label class="search-box"><span>⌕</span><input id="searchInput" type="search" autocomplete="off" data-i18n-placeholder="SEARCH_PLACEHOLDER" placeholder="ابحث في الأسئلة..."></label>
+   <div class="filter-row"><select id="chapterFilter"><option value="">كل الفصول</option></select><div class="category-filter-wrap"><button id="categoryBubbleBtn" class="category-bubble-btn" type="button">التصنيفات <span>⌄</span></button><div id="categoryBubble" class="category-bubble" aria-hidden="true"></div><select id="categoryFilter" class="visually-hidden-select"><option value="">كل التصنيفات</option></select></div></div>
+  </div>
+  <div class="result-bar"><span id="resultCount">0</span><span data-i18n="RESULTS">نتيجة</span><button id="clearFilters" class="clear-btn" type="button" data-i18n="CLEAR_FILTERS">مسح الفلاتر</button></div>
+  <div id="questionsState" class="state-message">جاري تحميل الأسئلة...</div>
+  <div id="questionsGrid" class="questions-feed"></div>
+ </div>
+</section>
 
 
   <!-- =====================================================
-       ADMIN APP
-       ===================================================== -->
+       LEO AI — FLOATING ASSISTANT
+  ====================================================== -->
+  <button id="leoFab" class="leo-fab" type="button" aria-label="اسأل ليو" title="اسأل ليو">
+    <span class="leo-fab-orbit"></span>
+    <span class="leo-fab-icon">ل</span>
+    <span class="leo-fab-label">اسأل ليو</span>
+  </button>
 
-  <div
-    id="adminApp"
-    class="admin-app hidden"
-  >
-
-
-    <!-- ===================================================
-         SIDEBAR
-         =================================================== -->
-
-    <aside class="sidebar">
-
-      <div class="side-brand">
-
-        <span>
-          ع
-        </span>
-
-        <div>
-
-          <strong>
-            عالم الدراسة
-          </strong>
-
-          <small>
-            ADMIN CONTROL
-          </small>
-
+  <div id="leoOverlay" class="leo-overlay" aria-hidden="true">
+    <div class="leo-backdrop" data-leo-close></div>
+    <aside class="leo-panel" role="dialog" aria-modal="true" aria-labelledby="leoTitle">
+      <div class="leo-panel-head">
+        <div class="leo-brand">
+          <div class="leo-avatar">ل</div>
+          <div>
+            <strong id="leoTitle">ليو</strong>
+            <span>اسأل ليو</span>
+          </div>
         </div>
-
+        <div class="leo-head-actions">
+          <button type="button" id="aiNewChat" class="ai-new-chat">محادثة جديدة</button>
+          <button type="button" class="leo-close" data-leo-close aria-label="إغلاق">×</button>
+        </div>
       </div>
 
+      <div id="leoQuestionContext" class="leo-question-context">
+        <span>السؤال الحالي</span>
+        <strong>لم يتم اختيار سؤال بعد</strong>
+      </div>
 
-      <!-- NAVIGATION -->
+      <div id="homeAiMessages" class="ai-messages">
+        <div class="ai-message ai-message-bot">
+          <div class="ai-message-label">ليو</div>
+          <div class="ai-message-text">أهلًا! أنا ليو. اختر «اسأل ليو» بجانب أي سؤال، وأنا هشرح لك السؤال المعروض خطوة بخطوة.</div>
+        </div>
+      </div>
 
-      <nav>
+      <div id="homeAiTyping" class="ai-typing hidden">
+        <span></span><span></span><span></span>
+        <label>ليو بيجهز الإجابة...</label>
+      </div>
 
-        <button
-          class="side-link active"
-          data-section="dashboard"
-          type="button"
-        >
-          لوحة التحكم
-        </button>
+      <div class="ai-quick-actions">
+        <button type="button" data-ai-home-prompt="اشرح لي السؤال بطريقة بسيطة">اشرح السؤال</button>
+        <button type="button" data-ai-home-prompt="أنا مش فاهم السؤال، وضحه لي">أنا مش فاهم</button>
+        <button type="button" data-ai-home-prompt="حل السؤال مع توضيح الخطوات">حل السؤال</button>
+      </div>
 
-
-        <button
-          class="side-link"
-          data-section="questions"
-          type="button"
-        >
-          الأسئلة
-        </button>
-
-
-        <button
-          class="side-link"
-          data-section="chapters"
-          type="button"
-        >
-          الفصول
-        </button>
-
-
-        <button
-          class="side-link"
-          data-section="categories"
-          type="button"
-        >
-          التصنيفات
-        </button>
-
-
-        <button
-          class="side-link"
-          data-section="settings"
-          type="button"
-        >
-          الإعدادات
-        </button>
-
-
-        <button
-          class="side-link"
-          data-section="account"
-          type="button"
-        >
-          الحساب
-        </button>
-
-
-        <!-- مساعد البرمجة داخل القائمة -->
-        <a
-          class="side-link ai-developer-link"
-          href="ai-chat.html"
-        >
-          مساعد البرمجة
-        </a>
-
-      </nav>
-
-
-      <!-- LOGOUT -->
-
-      <button
-        id="logoutBtn"
-        class="logout"
-        type="button"
-      >
-        تسجيل خروج
-      </button>
-
+      <div class="ai-composer">
+        <textarea id="homeAiInput" rows="1" placeholder="اسأل ليو عن السؤال..." autocomplete="off"></textarea>
+        <button type="button" id="homeAiSend" class="ai-send-button">إرسال</button>
+        <button type="button" id="homeAiStop" class="ai-stop-button hidden">إيقاف</button>
+      </div>
+      <div class="ai-footer-note">ليو · اسأل ليو</div>
     </aside>
-
-
-    <!-- ===================================================
-         MAIN
-         =================================================== -->
-
-    <main class="admin-main">
-
-
-      <!-- TOP BAR -->
-
-      <header class="admin-top">
-
-        <button
-          id="sidebarToggle"
-          class="mobile-menu"
-          type="button"
-          aria-label="فتح القائمة"
-        >
-          ☰
-        </button>
-
-
-        <div>
-
-          <p class="eyebrow">
-            CONTROL ROOM
-          </p>
-
-          <h2 id="sectionTitle">
-            لوحة التحكم
-          </h2>
-
-        </div>
-
-
-        <div class="admin-user">
-
-          <span id="adminIdentity">
-            —
-          </span>
-
-
-          <button
-            id="adminLanguageToggle"
-            class="language-toggle"
-            type="button"
-          >
-            EN
-          </button>
-
-        </div>
-
-      </header>
-
-
-      <!-- =================================================
-           DASHBOARD
-           ================================================= -->
-
-      <section
-        id="section-dashboard"
-        class="panel-section active"
-      >
-
-        <div class="metrics">
-
-          <article>
-
-            <small>
-              إجمالي الأسئلة
-            </small>
-
-            <strong id="mQuestions">
-              0
-            </strong>
-
-          </article>
-
-
-          <article>
-
-            <small>
-              المنشور
-            </small>
-
-            <strong id="mPublished">
-              0
-            </strong>
-
-          </article>
-
-
-          <article>
-
-            <small>
-              الفصول
-            </small>
-
-            <strong id="mChapters">
-              0
-            </strong>
-
-          </article>
-
-
-          <article>
-
-            <small>
-              التصنيفات
-            </small>
-
-            <strong id="mCategories">
-              0
-            </strong>
-
-          </article>
-
-        </div>
-
-
-        <div class="panel-card">
-
-          <div class="panel-head">
-
-            <div>
-
-              <p class="eyebrow">
-                آخر الإضافات
-              </p>
-
-              <h3>
-                أحدث الأسئلة
-              </h3>
-
-            </div>
-
-          </div>
-
-
-          <div id="recentQuestions"></div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           QUESTIONS
-           ================================================= -->
-
-      <section
-        id="section-questions"
-        class="panel-section"
-      >
-
-        <div class="panel-card">
-
-          <div class="panel-head">
-
-            <div>
-
-              <p class="eyebrow">
-                إدارة الأسئلة
-              </p>
-
-              <h3>
-                الأسئلة
-              </h3>
-
-            </div>
-
-
-            <button
-              class="primary"
-              id="addQuestionBtn"
-              type="button"
-            >
-              + إضافة سؤال
-            </button>
-
-          </div>
-
-
-          <input
-            class="admin-search"
-            id="adminQuestionSearch"
-            type="search"
-            placeholder="ابحث في الأسئلة..."
-          >
-
-
-          <div class="table-wrap">
-
-            <table>
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    الترتيب
-                  </th>
-
-                  <th>
-                    ID
-                  </th>
-
-                  <th>
-                    العنوان
-                  </th>
-
-                  <th>
-                    الفصل
-                  </th>
-
-                  <th>
-                    التصنيف
-                  </th>
-
-                  <th>
-                    الحالة
-                  </th>
-
-                  <th>
-                    التاريخ
-                  </th>
-
-                  <th>
-                    إجراءات
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody id="questionsTable"></tbody>
-
-            </table>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           CHAPTERS
-           ================================================= -->
-
-      <section
-        id="section-chapters"
-        class="panel-section"
-      >
-
-        <div class="panel-card">
-
-          <div class="panel-head">
-
-            <div>
-
-              <p class="eyebrow">
-                إدارة الفصول
-              </p>
-
-              <h3>
-                الفصول
-              </h3>
-
-            </div>
-
-
-            <button
-              class="primary"
-              id="addChapterBtn"
-              type="button"
-            >
-              + إضافة فصل
-            </button>
-
-          </div>
-
-
-          <div id="chaptersAdmin"></div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           CATEGORIES
-           ================================================= -->
-
-      <section
-        id="section-categories"
-        class="panel-section"
-      >
-
-        <div class="panel-card">
-
-          <div class="panel-head">
-
-            <div>
-
-              <p class="eyebrow">
-                إدارة التصنيفات
-              </p>
-
-              <h3>
-                التصنيفات
-              </h3>
-
-            </div>
-
-
-            <button
-              class="primary"
-              id="addCategoryBtn"
-              type="button"
-            >
-              + إضافة تصنيف
-            </button>
-
-          </div>
-
-
-          <div id="categoriesAdmin"></div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           SETTINGS
-           ================================================= -->
-
-      <section
-        id="section-settings"
-        class="panel-section"
-      >
-
-        <form
-          id="settingsForm"
-          class="panel-card"
-        >
-
-          <div class="panel-head">
-
-            <div>
-
-              <p class="eyebrow">
-                إدارة الموقع بالكامل
-              </p>
-
-              <h3>
-                الإعدادات والوسائط
-              </h3>
-
-            </div>
-
-          </div>
-
-
-          <div class="form-grid">
-
-            <label>
-
-              اسم الموقع
-
-              <input id="sSiteName">
-
-            </label>
-
-
-            <label>
-
-              بريد التواصل
-
-              <input
-                id="sEmail"
-                type="email"
-              >
-
-            </label>
-
-
-            <label class="full">
-
-              وصف الموقع
-
-              <textarea
-                id="sDescription"
-                rows="3"
-              ></textarea>
-
-            </label>
-
-
-            <label>
-
-              رقم واتساب
-
-              <input
-                id="sWhatsApp"
-                placeholder="2010..."
-              >
-
-            </label>
-
-
-            <label>
-
-              رسالة واتساب الافتراضية
-
-              <textarea
-                id="sWhatsAppMessage"
-                rows="3"
-              ></textarea>
-
-            </label>
-
-
-            <label class="full">
-
-              نص التذييل
-
-              <input id="sFooter">
-
-            </label>
-
-
-            <label class="full">
-
-              رفع فيديو شاشة الدخول
-
-              <input
-                id="sLockVideoFile"
-                type="file"
-                accept="video/*"
-              >
-
-            </label>
-
-
-            <label class="full media-current">
-
-              فيديو شاشة الدخول الحالي
-
-              <input
-                id="sLockVideo"
-                readonly
-              >
-
-            </label>
-
-
-            <label>
-
-              رفع صورة ليو (GIF أو صورة)
-
-              <input
-                id="sLeoImageFile"
-                type="file"
-                accept="image/*"
-              >
-
-            </label>
-
-
-            <label>
-
-              صورة ليو الحالية
-
-              <input
-                id="sLeoImage"
-                readonly
-              >
-
-            </label>
-
-          </div>
-
-
-          <p class="media-help">
-            ارفع الصورة أو الفيديو من جهازك؛ لا تحتاج لكتابة رابط. الحد الأقصى للفيديو 80MB.
-          </p>
-
-
-          <button
-            class="primary"
-            type="submit"
-          >
-            حفظ كل الإعدادات
-          </button>
-
-
-          <div
-            id="settingsMessage"
-            class="form-message"
-          ></div>
-
-        </form>
-
-      </section>
-
-
-      <!-- =================================================
-           ACCOUNT
-           ================================================= -->
-
-      <section
-        id="section-account"
-        class="panel-section"
-      >
-
-        <div class="panel-card account-card">
-
-          <p class="eyebrow">
-            جلسة الأدمن
-          </p>
-
-          <h3 id="accountEmail">
-            —
-          </h3>
-
-          <p id="accountRole">
-            الدور: —
-          </p>
-
-
-          <button
-            class="danger-btn"
-            id="accountLogout"
-            type="button"
-          >
-            تسجيل خروج
-          </button>
-
-        </div>
-
-      </section>
-
-
-    </main>
-
   </div>
 
+<section class="section chapters-section" id="chapters">
+ <div class="container"><div class="section-heading"><div><p class="eyebrow">INDEX OF FILES</p><h2 data-i18n="CHAPTERS">الفصول</h2></div><span class="section-number">02 / 04</span></div><div id="chaptersGrid" class="chapters-grid"></div></div>
+</section>
 
-  <!-- =====================================================
-       MODAL
-       ===================================================== -->
+<section class="section about-section"><div class="container about-grid"><div><p class="eyebrow" data-i18n="ABOUT">عن المنصة</p><h2>كل سؤال<br>له مكان.</h2></div><p data-i18n="ABOUT_TEXT">كل سؤال بيتحفظ مع عنوانه وإجابته وشرحه وتصنيفه، ومعاه صورة أو فيديو لو متاح. الهدف إن المراجعة تبقى أسرع وأوضح.</p></div></section>
 
-  <div
-    id="modal"
-    class="modal hidden"
-  >
+<section class="section contact-section" id="contact"><div class="container contact-box"><div><p class="eyebrow" data-i18n="FINAL_NOTE">FINAL NOTE</p><h2 data-i18n="FOUND_PROBLEM">وجدت مشكلة؟</h2><p data-i18n="CONTACT_TEXT">لو لقيت خطأ في سؤال أو عندك مشكلة في المحتوى، تواصل معنا مباشرة.</p></div><div id="contactActions" class="contact-actions"><span class="state-message">واتساب أو بريد إلكتروني</span></div></div></section>
+</main>
 
-    <div
-      class="modal-backdrop"
-      data-close
-    ></div>
+<footer class="site-footer"><div class="container footer-grid"><div><strong>عالم الدراسة</strong><span id="footerText">© 2026 عالم الدراسة</span></div><a href="#contact" data-i18n="CONTACT">تواصل معنا</a></div></footer>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
 
-
-    <div class="modal-card">
-
-      <button
-        class="modal-close"
-        data-close
-        type="button"
-      >
-        ×
-      </button>
-
-
-      <div id="modalContent"></div>
-
-    </div>
-
-  </div>
-
-
-  <!-- TOAST -->
-
-  <div
-    id="toastRegion"
-    class="toast-region"
-  ></div>
-
-
-  <!-- =====================================================
-       SCRIPTS
-       ===================================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="i18n.js"></script>
-
-  <script src="config.js"></script>
-
-  <script src="admin.js"></script>
-
-</body>
-
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="i18n.js"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>
