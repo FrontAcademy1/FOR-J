@@ -1,5 +1,5 @@
 /* =========================================================
-   QUESTION ARCHIVE — AI DEVELOPER CHAT
+   عالم الدراسة — AI DEVELOPER CHAT
    n8n Production Webhook
    ========================================================= */
 
@@ -1075,7 +1075,7 @@ ${error.message || error}`
     }
 
     setConnection(
-      "متصل بـ QUESTION ARCHIVE",
+      "متصل بـ عالم الدراسة",
       "online"
     );
 
