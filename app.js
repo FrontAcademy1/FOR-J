@@ -9,7 +9,7 @@
 ========================================================= */
 
 // غيّر كلمة المرور من هنا فقط
-const SITE_PASSWORD = "جين";
+const SITE_PASSWORD = "0000";
 
 // اسم صورة ليو
 const DEFAULT_AI_AVATAR = "assets/images/ai-avatar.png";
