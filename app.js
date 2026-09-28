@@ -4,54 +4,97 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $=s=>document.querySelector(s);
 const state={questions:[],chapters:[],categories:[],settings:{}};
 
-function initPasswordGate(){
- const gate=document.getElementById("passwordGate"),form=document.getElementById("passwordForm"),input=document.getElementById("sitePassword"),error=document.getElementById("passwordError");
- if(!gate||!form)return;
- if(sessionStorage.getItem("qa_access_granted")==="1"){gate.remove();return;}
- document.body.classList.add("locked");
- setTimeout(()=>input?.focus(),100);
- form.addEventListener("submit",e=>{
-   e.preventDefault();
-   if(input.value==="2010"){
-     sessionStorage.setItem("qa_access_granted","1");
-     gate.classList.add("unlocked");
-     document.body.classList.remove("locked");
-     setTimeout(()=>gate.remove(),450);
-   }else{
-     error.textContent="رمز الدخول غير صحيح.";
-     input.classList.add("shake");
-     setTimeout(()=>input.classList.remove("shake"),450);
-     input.select();
-   }
- });
-}
-document.addEventListener("DOMContentLoaded",async()=>{initPasswordGate();
+
+/* =========================================================
+   STUDY ARCHIVE — ENTRY PASSWORD
+========================================================= */
+(() => {
+  const gate = document.getElementById("passwordGate");
+  const form = document.getElementById("passwordForm");
+  const input = document.getElementById("sitePassword");
+  const error = document.getElementById("passwordError");
+  if (!gate || !form) return;
+
+  const unlocked = sessionStorage.getItem("study_world_unlocked") === "1";
+  if (unlocked) {
+    gate.classList.add("hidden");
+    document.body.classList.remove("password-locked");
+  } else {
+    document.body.classList.add("password-locked");
+    setTimeout(() => input?.focus(), 120);
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (input.value === "2010") {
+      sessionStorage.setItem("study_world_unlocked", "1");
+      gate.classList.add("hidden");
+      document.body.classList.remove("password-locked");
+      if (error) error.textContent = "";
+      input.value = "";
+    } else {
+      if (error) error.textContent = "كلمة المرور غير صحيحة.";
+      input.value = "";
+      input.focus();
+    }
+  });
+})();
+
+document.addEventListener("DOMContentLoaded",async()=>{
  createBubbles();bindNavigation();bindFilters();await loadPublicData();
 });
 function createBubbles(){const box=$("#bubbles");if(!box)return;for(let i=0;i<18;i++){const b=document.createElement("span"),s=20+Math.random()*90;b.className="bubble";b.style.width=b.style.height=`${s}px`;b.style.left=`${Math.random()*100}%`;b.style.animationDuration=`${18+Math.random()*25}s`;b.style.animationDelay=`${-Math.random()*30}s`;box.appendChild(b)}}
 function bindNavigation(){const toggle=$("#menuToggle"),nav=$("#mainNav");toggle?.addEventListener("click",()=>{const open=nav.classList.toggle("open");toggle.setAttribute("aria-expanded",open)});nav?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>nav.classList.remove("open")))}
-function bindFilters(){["searchInput","chapterFilter","categoryFilter"].forEach(id=>document.getElementById(id)?.addEventListener(id==="searchInput"?"input":"change",renderQuestions));$("#clearFilters")?.addEventListener("click",()=>{$("#searchInput").value="";$("#chapterFilter").value="";$("#categoryFilter").value="";renderQuestions()})}
+function bindFilters(){["searchInput","chapterFilter","categoryFilter"].forEach(id=>document.getElementById(id)?.addEventListener(id==="searchInput"?"input":"change",()=>{renderCategoryBubble();renderQuestions()}));$("#categoryBubbleBtn")?.addEventListener("click",()=>$("#categoryBubble")?.classList.toggle("open"));document.addEventListener("click",e=>{if(!e.target.closest(".category-filter-wrap"))$("#categoryBubble")?.classList.remove("open")});$("#clearFilters")?.addEventListener("click",()=>{$("#searchInput").value="";$("#chapterFilter").value="";$("#categoryFilter").value="";renderCategoryBubble();renderQuestions()})}
 async function loadPublicData(){
- setQuestionsState(QA_I18N.t("LOADING"));
- try{
-  const [q,ch,cat,settings]=await Promise.all([
-   db.from("questions").select("id,title,question_text,answer,explanation,chapter_id,category_id,image_url,video_url,code,created_at").eq("published",true).order("created_at",{ascending:false}),
-   db.from("chapters").select("id,title,description,display_order,created_at").order("display_order",{ascending:true}),
-   db.from("categories").select("id,name,slug,description,created_at").order("name",{ascending:true}),
-   db.from("site_settings").select("key,value").in("key",["site_name","site_description","whatsapp_number","whatsapp_message","contact_email","footer_text"])
+  setQuestionsState(QA_I18N.t("LOADING"));
+  // كل قسم يتحمل فشله منفردًا حتى لا يبقى الموقع عالقًا في "جاري التحميل".
+  const [q,ch,cat,settings]=await Promise.allSettled([
+    db.from("questions").select("*") ,
+    db.from("chapters").select("id,title,description,display_order,created_at").order("display_order",{ascending:true}),
+    db.from("categories").select("id,name,slug,description,created_at").order("name",{ascending:true}),
+    db.from("site_settings").select("key,value")
   ]);
-  for(const r of [q,ch,cat,settings])if(r.error)throw r.error;
-  state.questions=q.data||[];state.chapters=ch.data||[];state.categories=cat.data||[];state.settings=Object.fromEntries((settings.data||[]).map(x=>[x.key,x.value]));
+  const unwrap=(r, fallback)=>r.status==="fulfilled" && !r.value.error ? (r.value.data||fallback) : fallback;
+  state.questions=unwrap(q,[]).filter(x=>x.published !== false).sort((a,b)=>{const ao=Number(a.display_order)||999999,bo=Number(b.display_order)||999999; if(ao!==bo)return ao-bo; return new Date(a.created_at||0)-new Date(b.created_at||0);});
+  state.chapters=unwrap(ch,[]);
+  state.categories=unwrap(cat,[]);
+  state.settings=Object.fromEntries(unwrap(settings,[]).map(x=>[x.key,x.value]));
   renderAll();
- }catch(e){console.error(e);setQuestionsState(QA_I18N.t("DATA_ERROR"));toast(QA_I18N.t("DATA_ERROR"))}
+  applySiteBranding();
+  if(q.status!=="fulfilled" || q.value?.error) console.error("questions load error",q.reason||q.value?.error);
 }
-function renderAll(){renderFilters();renderQuestions();renderChapters();renderStats();renderContact();document.title=state.settings.site_name||"QUESTION ARCHIVE";$("#footerText").textContent=state.settings.footer_text||"© 2026 Question Archive"}
+function renderAll(){
+  renderStats();
+  renderFilters();
+  renderQuestions();
+  renderChapters();
+  renderContact();
+}
+
+function applySiteBranding(){
+  const name=state.settings.site_name||"عالم الدراسة";
+  document.title=name;
+  document.querySelectorAll(".brand strong,.footer-grid strong").forEach(x=>x.textContent=name);
+  const footer=document.getElementById("footerText"); if(footer) footer.textContent=state.settings.footer_text||`© 2026 ${name}`;
+  const v=document.getElementById("lockBackgroundVideo");
+  if(v && state.settings.lock_video_url){v.src=state.settings.lock_video_url; v.parentElement.classList.add("has-lock-video"); v.load(); v.play().catch(()=>{});}
+  const avatar=document.querySelector(".leo-avatar");
+  if(avatar && state.settings.leo_image_url){avatar.style.backgroundImage=`url("${String(state.settings.leo_image_url).replace(/"/g,'')}" )`;avatar.classList.add("has-image");avatar.textContent="";}
+}
 function renderStats(){$("#totalQuestions").textContent=state.questions.length;$("#totalChapters").textContent=state.chapters.length;$("#totalCategories").textContent=state.categories.length}
 function renderFilters(){
  const chap=state.chapters.map(c=>`<option value="${attr(c.id)}">${esc(c.title)}</option>`).join("");
  const cat=state.categories.map(c=>`<option value="${attr(c.id)}">${esc(c.name)}</option>`).join("");
  $("#chapterFilter").innerHTML=`<option value="">${esc(QA_I18N.t("ALL_CHAPTERS"))}</option>`+chap;
  $("#categoryFilter").innerHTML=`<option value="">${esc(QA_I18N.t("ALL_CATEGORIES"))}</option>`+cat;
+ renderCategoryBubble();
+}
+function renderCategoryBubble(){
+ const box=$("#categoryBubble"); if(!box)return;
+ const current=$("#categoryFilter")?.value||"";
+ box.innerHTML=`<button type="button" class="category-chip ${!current?"active":""}" data-cat="">كل التصنيفات</button>`+state.categories.map(c=>`<button type="button" class="category-chip ${current===String(c.id)?"active":""}" data-cat="${attr(c.id)}">${esc(c.name)}</button>`).join("");
+ box.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{$("#categoryFilter").value=b.dataset.cat;box.classList.remove("open");$("#categoryBubbleBtn")?.classList.toggle("active",!!b.dataset.cat);renderCategoryBubble();renderQuestions();}));
 }
 function renderQuestions(){
  const search=$("#searchInput").value.trim().toLowerCase(),cid=$("#chapterFilter").value,catid=$("#categoryFilter").value;
@@ -75,6 +118,7 @@ function questionCard(q,index){
    <button class="mini-btn" type="button" onclick="toggleBox(this,'explanation-${attr(q.id)}','SHOW_EXPLANATION','HIDE_EXPLANATION')">${QA_I18N.t("SHOW_EXPLANATION")}</button>
    ${q.code?`<button class="mini-btn" type="button" onclick="toggleBox(this,'code-${attr(q.id)}','SHOW_CODE','HIDE_CODE')">${QA_I18N.t("SHOW_CODE")}</button>`:""}
    <button class="mini-btn" type="button" onclick="copyQuestion('${attr(q.id)}')">${QA_I18N.t("COPY")}</button>
+   <button class="mini-btn leo-question-btn" type="button" onclick="askLeo('${attr(q.id)}')">اسأل ليو</button>
    <button class="mini-btn danger" type="button" onclick="reportQuestion('${attr(q.id)}')">${QA_I18N.t("REPORT")}</button>
   </div>
   <div class="answer-box reveal-box" id="answer-${attr(q.id)}">${esc(q.answer||QA_I18N.t("ANSWER_EMPTY"))}</div>
@@ -91,15 +135,69 @@ function renderChapters(){
 function selectChapter(id){$("#chapterFilter").value=id;$("#questions").scrollIntoView({behavior:"smooth",block:"start"});renderQuestions()}
 function renderContact(){const n=(state.settings.whatsapp_number||"").replace(/\D/g,""),m=state.settings.whatsapp_message||"أهلًا، عندي مشكلة في أحد الأسئلة.",e=state.settings.contact_email||"";let h="";if(n)h+=`<a class="btn btn-gold" target="_blank" rel="noopener noreferrer" href="https://wa.me/${n}?text=${encodeURIComponent(m)}">${esc(QA_I18N.t("WHATSAPP"))}</a>`;if(e)h+=`<a class="btn" href="mailto:${attr(e)}">${esc(QA_I18N.t("EMAIL"))}</a>`;$("#contactActions").innerHTML=h||`<span class="state-message">${esc(QA_I18N.t("CONTACT_UNAVAILABLE"))}</span>`}
 window.toggleBox=(button,id,showKey,hideKey)=>{const el=document.getElementById(id);if(!el)return;const open=el.classList.toggle("open");button.textContent=QA_I18N.t(open?hideKey:showKey)}
-window.copyQuestion=async id=>{const q=state.questions.find(x=>String(x.id)===String(id));if(!q)return;try{await navigator.clipboard.writeText(q.question_text||"");toast(QA_I18N.t("COPIED"))}catch{toast(QA_I18N.t("COPY_FAIL"))}}
+window.copyQuestion=async id=>{const q=state.questions.find(x=>String(x.id)===String(id));if(!q)return;const answer=(q.answer||"").trim();if(!answer){toast(QA_I18N.t("ANSWER_EMPTY"));return}try{await navigator.clipboard.writeText(answer);toast(QA_I18N.t("COPIED"))}catch{toast(QA_I18N.t("COPY_FAIL"))}}
 window.reportQuestion=id=>{const q=state.questions.find(x=>String(x.id)===String(id));if(!q)return;const n=(state.settings.whatsapp_number||"").replace(/\D/g,"");if(!n){toast(QA_I18N.t("CONTACT_UNAVAILABLE"));return}const msg=`Question #${q.id}\n${q.title}`;window.open(`https://wa.me/${n}?text=${encodeURIComponent(msg)}`,"_blank","noopener")}
 function setQuestionsState(m){$("#questionsState").textContent=m}
 function toast(m){const r=$("#toastRegion"),e=document.createElement("div");e.className="toast";e.textContent=m;r.appendChild(e);setTimeout(()=>e.remove(),2800)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function attr(v){return esc(v)}
 window.addEventListener("qa-language-change",()=>{const s=$("#searchInput");if(s)s.placeholder=QA_I18N.t("SEARCH_PLACEHOLDER");renderFilters();renderQuestions();renderChapters();renderContact();renderStats()});
+
 /* =========================================================
-   HOME AI DEVELOPER — n8n
+   LEO AI — CURRENT QUESTION CONTEXT
+========================================================= */
+(() => {
+  const overlay = document.getElementById("leoOverlay");
+  const fab = document.getElementById("leoFab");
+  const context = document.getElementById("leoQuestionContext");
+  if (!overlay || !fab) return;
+
+  window.leoCurrentQuestion = null;
+
+  function openLeo(q = null) {
+    if (q) {
+      window.leoCurrentQuestion = q;
+      const title = context?.querySelector("strong");
+      if (title) title.textContent = q.title || "السؤال الحالي";
+    }
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden","false");
+    document.body.classList.add("leo-open");
+    const input=document.getElementById("homeAiInput");
+    if(input) setTimeout(()=>input.focus(),180);
+  }
+
+  function closeLeo() {
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden","true");
+    document.body.classList.remove("leo-open");
+  }
+
+  window.openLeo = openLeo;
+  window.closeLeo = closeLeo;
+
+  window.askLeo = (id) => {
+    const q = state.questions.find(x => String(x.id) === String(id));
+    if (!q) return;
+    openLeo(q);
+    const messages=document.getElementById("homeAiMessages");
+    if (messages) {
+      messages.innerHTML = `
+        <div class="ai-message ai-message-bot">
+          <div class="ai-message-label">ليو</div>
+          <div class="ai-message-text">أنا معاك في السؤال ده. قلّي الجزء اللي مش واضح، أو اضغط «اشرح السؤال».</div>
+        </div>`;
+    }
+    window.dispatchEvent(new CustomEvent("leo-question-selected",{detail:q}));
+  };
+
+  fab.addEventListener("click",()=>openLeo(window.leoCurrentQuestion));
+  overlay.querySelectorAll("[data-leo-close]").forEach(el=>el.addEventListener("click",closeLeo));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLeo();});
+})();
+
+/* =========================================================
+   HOME ليو — n8n
 ========================================================= */
 
 (() => {
@@ -208,7 +306,7 @@ window.addEventListener("qa-language-change",()=>{const s=$("#searchInput");if(s
         ${
           type === "user"
             ? "أنت"
-            : "AI DEVELOPER"
+            : "ليو"
         }
       </div>
 
@@ -387,7 +485,19 @@ window.addEventListener("qa-language-change",()=>{const s=$("#searchInput");if(s
                   "developer",
 
                 source:
-                  "question-archive-home"
+                  "question-archive-leo",
+
+                currentQuestion:
+                  window.leoCurrentQuestion
+                    ? {
+                        id: window.leoCurrentQuestion.id,
+                        title: window.leoCurrentQuestion.title,
+                        question: window.leoCurrentQuestion.question_text,
+                        answer: window.leoCurrentQuestion.answer,
+                        explanation: window.leoCurrentQuestion.explanation,
+                        code: window.leoCurrentQuestion.code
+                      }
+                    : null
 
               }),
 
@@ -568,7 +678,7 @@ window.addEventListener("qa-language-change",()=>{const s=$("#searchInput");if(s
           <div class="ai-message ai-message-bot">
 
             <div class="ai-message-label">
-              AI DEVELOPER
+              ليو
             </div>
 
             <div class="ai-message-text">
