@@ -1,151 +1,2018 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
 <title>عالم الدراسة</title>
-<meta name="description" content="عالم الدراسة — منصة تعليمية للأسئلة والإجابات والشروحات.">
-<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+<meta
+  name="description"
+  content="عالم الدراسة — منصة تعليمية للأسئلة والإجابات والشروحات."
+>
+
+<link
+  rel="icon"
+  href="assets/images/favicon.svg"
+  type="image/svg+xml"
+>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- =========================================
+     CINEMATIC PASSWORD SCREEN STYLE
+     ========================================= -->
+
+<style>
+
+.password-gate {
+  position: fixed;
+  inset: 0;
+
+  z-index: 999999;
+
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #030305;
+  color: #fff;
+
+  isolation: isolate;
+
+  transition:
+    opacity .7s ease,
+    transform .7s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* VIDEO */
+
+.lock-background-video {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  z-index: -10;
+
+  filter:
+    brightness(.38)
+    contrast(1.2)
+    saturate(.8);
+
+  transform: scale(1.04);
+}
+
+
+/* OVERLAY */
+
+.lock-background-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: -9;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(150,0,40,.18),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.25),
+      rgba(0,0,0,.88)
+    );
+}
+
+
+/* FILM */
+
+.lock-film {
+  position: absolute;
+  inset: 0;
+
+  z-index: -8;
+
+  pointer-events: none;
+
+  opacity: .18;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.025) 0,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+
+/* GLOW */
+
+.lock-glow {
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  border-radius: 50%;
+
+  filter: blur(130px);
+
+  opacity: .15;
+
+  pointer-events: none;
+
+  z-index: -5;
+}
+
+.lock-glow-red {
+  top: -180px;
+  right: -130px;
+
+  background: #ff174f;
+
+  animation:
+    lockFloat
+    8s
+    ease-in-out
+    infinite;
+}
+
+.lock-glow-purple {
+  bottom: -180px;
+  left: -130px;
+
+  background: #782cff;
+
+  animation:
+    lockFloat
+    10s
+    ease-in-out
+    infinite
+    reverse;
+}
+
+@keyframes lockFloat {
+
+  0%,
+  100% {
+    transform: translate(0,0);
+  }
+
+  50% {
+    transform: translate(35px,-25px);
+  }
+
+}
+
+
+/* CARD */
+
+.password-card {
+
+  width: min(92%, 510px);
+
+  padding: 42px 34px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.105),
+      rgba(255,255,255,.025)
+    );
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  box-shadow:
+    0 40px 110px rgba(0,0,0,.75),
+    inset 0 1px rgba(255,255,255,.12);
+
+  animation:
+    passwordCardIn
+    1s
+    cubic-bezier(.16,1,.3,1)
+    both;
+}
+
+@keyframes passwordCardIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(45px)
+      scale(.94);
+
+    filter: blur(12px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter: blur(0);
+  }
+
+}
+
+
+/* BRAND */
+
+.password-brand {
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  margin-bottom: 20px;
+}
+
+.password-brand span {
+
+  color:
+    rgba(255,255,255,.7);
+
+  margin-left: 5px;
+}
+
+.password-brand strong {
+
+  color: #ff315f;
+
+  text-shadow:
+    0 0 25px
+    rgba(255,49,95,.55);
+}
+
+
+/* BADGE */
+
+.password-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.045);
+
+  color:
+    rgba(255,255,255,.65);
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+}
+
+.password-badge span {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #ff315f;
+
+  box-shadow:
+    0 0 12px #ff315f;
+
+  animation:
+    passwordPulse
+    1.6s
+    infinite;
+}
+
+@keyframes passwordPulse {
+
+  0%,
+  100% {
+    opacity: .45;
+    transform: scale(.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+}
+
+
+/* TITLE */
+
+.password-card h1 {
+
+  margin:
+    26px 0 10px;
+
+  font-size:
+    clamp(35px,7vw,58px);
+
+  line-height: 1.05;
+
+  letter-spacing: -2px;
+
+  font-weight: 800;
+}
+
+.password-card h1 em {
+
+  display: block;
+
+  font-style: normal;
+
+  background:
+    linear-gradient(
+      90deg,
+      #fff,
+      #ff315f,
+      #9d45ff
+    );
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
+}
+
+
+/* INTRO */
+
+.password-intro {
+
+  margin:
+    0 auto 25px;
+
+  color:
+    rgba(255,255,255,.58);
+
+  font-size: 13px;
+}
+
+
+/* INPUT */
+
+.password-input-wrap {
+
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+
+  min-height: 60px;
+
+  padding: 5px;
+
+  border-radius: 17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.055);
+
+  transition: .3s ease;
+}
+
+.password-input-wrap:focus-within {
+
+  border-color:
+    rgba(255,49,95,.7);
+
+  background:
+    rgba(255,255,255,.075);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(255,49,95,.07),
+
+    0 0 35px
+    rgba(255,49,95,.10);
+}
+
+.password-icon {
+
+  margin:
+    0 12px;
+
+  color:
+    rgba(255,255,255,.48);
+
+  font-size: 20px;
+}
+
+.password-input-wrap input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 48px;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  direction: rtl;
+}
+
+.password-input-wrap input::placeholder {
+
+  color:
+    rgba(255,255,255,.38);
+}
+
+
+/* PASSWORD BUTTON */
+
+.password-toggle {
+
+  width: 45px;
+  height: 45px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255,255,255,.055);
+
+  color:
+    rgba(255,255,255,.52);
+
+  cursor: pointer;
+
+  transition: .25s ease;
+}
+
+.password-toggle:hover {
+
+  color: #fff;
+
+  background:
+    rgba(255,49,95,.16);
+}
+
+
+/* ENTER */
+
+.password-enter {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 58px;
+
+  margin-top: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  border: 0;
+
+  border-radius: 17px;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      105deg,
+      #ff2458,
+      #a137ff
+    );
+
+  box-shadow:
+    0 15px 40px
+    rgba(255,36,88,.23);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.password-enter::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.28),
+      transparent
+    );
+
+  transform:
+    skewX(-20deg);
+
+  transition:
+    left .7s ease;
+}
+
+.password-enter:hover {
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 22px 55px
+    rgba(255,36,88,.35);
+}
+
+.password-enter:hover::before {
+
+  left: 150%;
+}
+
+.password-enter b {
+
+  font-size: 21px;
+
+  transition:
+    transform .25s ease;
+}
+
+.password-enter:hover b {
+
+  transform:
+    translateX(-6px);
+}
+
+
+/* ERROR */
+
+#passwordError {
+
+  display: block;
+
+  min-height: 20px;
+
+  margin-top: 12px;
+
+  color: #ff6685;
+
+  font-size: 12px;
+}
+
+
+/* FOOTER */
+
+.password-footer {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 24px;
+
+  color:
+    rgba(255,255,255,.36);
+
+  font-size: 10px;
+}
+
+.password-footer span {
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #ff315f;
+
+  box-shadow:
+    0 0 10px #ff315f;
+}
+
+
+/* AI AVATAR */
+
+.leo-avatar {
+
+  width: 44px;
+  height: 44px;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  flex-shrink: 0;
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+}
+
+.leo-avatar img {
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .password-card {
+
+    width:
+      calc(100% - 26px);
+
+    padding:
+      32px 20px;
+
+    border-radius: 23px;
+  }
+
+  .password-card h1 {
+
+    font-size: 40px;
+  }
+
+  .lock-background-video {
+
+    object-position: center;
+  }
+
+}
+
+</style>
+
 </head>
+
+
 <body>
-<div id="passwordGate" class="password-gate" aria-modal="true" role="dialog">
-  <video id="lockBackgroundVideo" class="lock-background-video" autoplay muted loop playsinline></video>
+
+
+<!-- =====================================================
+     PASSWORD GATE
+     ===================================================== -->
+
+<div
+  id="passwordGate"
+  class="password-gate"
+  aria-modal="true"
+  role="dialog"
+>
+
+  <!-- Death Note / Anime Background -->
+  <video
+    id="lockBackgroundVideo"
+    class="lock-background-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+
+    <source
+      src="assets/videos/death-note.mp4"
+      type="video/mp4"
+    >
+
+  </video>
+
+
   <div class="lock-background-overlay"></div>
+
+  <div class="lock-film"></div>
+
+  <div class="lock-glow lock-glow-red"></div>
+
+  <div class="lock-glow lock-glow-purple"></div>
+
+
+  <!-- PASSWORD CARD -->
+
   <div class="password-card">
-    <div class="password-mark">ع</div>
-    <span class="password-kicker">عالم الدراسة</span>
-    <h1>عالم الدراسة</h1>
-    <p>أدخل كلمة المرور للدخول.</p>
-    <form id="passwordForm">
-      <label for="sitePassword">كلمة المرور</label>
-      <input id="sitePassword" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" required>
-      <button type="submit">دخول</button>
-      <small id="passwordError" aria-live="polite"></small>
+
+    <div class="password-brand">
+
+      <span>عالم</span>
+
+      <strong>الدراسة</strong>
+
+    </div>
+
+
+    <div class="password-badge">
+
+      <span></span>
+
+      PRIVATE STUDY SYSTEM
+
+    </div>
+
+
+    <h1>
+
+      أهلاً بك في
+
+      <em>عالم الدراسة</em>
+
+    </h1>
+
+
+    <p class="password-intro">
+
+      بوابتك الخاصة للمراجعة والأسئلة والشروحات
+
+    </p>
+
+
+    <form
+      id="passwordForm"
+      autocomplete="off"
+    >
+
+      <div class="password-input-wrap">
+
+        <span class="password-icon">
+          ⌾
+        </span>
+
+
+        <input
+          id="sitePassword"
+          type="password"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="أدخل كلمة المرور"
+          required
+        >
+
+
+        <button
+          id="passwordToggle"
+          type="button"
+          class="password-toggle"
+          aria-label="إظهار كلمة المرور"
+        >
+
+          ◉
+
+        </button>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="password-enter"
+      >
+
+        <span>
+          دخول إلى المنصة
+        </span>
+
+        <b>
+          ←
+        </b>
+
+      </button>
+
+
+      <small
+        id="passwordError"
+        aria-live="polite"
+      ></small>
+
     </form>
+
+
+    <div class="password-footer">
+
+      <span></span>
+
+      اتصال آمن · عالم الدراسة
+
+    </div>
+
   </div>
+
 </div>
-<div class="film-grain"></div><div id="bubbles" class="bubbles"></div>
+
+
+<!-- =====================================================
+     MAIN SITE
+     ===================================================== -->
+
+<div class="film-grain"></div>
+
+<div
+  id="bubbles"
+  class="bubbles"
+></div>
+
 
 <header class="site-header">
+
   <div class="container nav-wrap">
-    <a class="brand" href="#home"><span class="brand-mark">ع</span><span><strong>عالم الدراسة</strong><small>منصة الدراسة</small></span></a>
-    <div class="nav-tools"><button id="languageToggle" class="language-toggle" type="button">EN</button><button id="menuToggle" class="menu-toggle" type="button" aria-expanded="false">☰</button></div>
-    <nav class="main-nav" id="mainNav">
-      <a href="#home" data-i18n="HOME">الرئيسية</a><a href="#questions" data-i18n="QUESTIONS">الأسئلة</a><a href="#chapters" data-i18n="CHAPTERS">الفصول</a><a href="#contact" data-i18n="CONTACT">تواصل معنا</a>
+
+    <a
+      class="brand"
+      href="#home"
+    >
+
+      <span class="brand-mark">
+        ع
+      </span>
+
+      <span>
+
+        <strong>
+          عالم الدراسة
+        </strong>
+
+        <small>
+          منصة الدراسة
+        </small>
+
+      </span>
+
+    </a>
+
+
+    <div class="nav-tools">
+
+      <button
+        id="languageToggle"
+        class="language-toggle"
+        type="button"
+      >
+        EN
+      </button>
+
+
+      <button
+        id="menuToggle"
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </div>
+
+
+    <nav
+      class="main-nav"
+      id="mainNav"
+    >
+
+      <a
+        href="#home"
+        data-i18n="HOME"
+      >
+        الرئيسية
+      </a>
+
+      <a
+        href="#questions"
+        data-i18n="QUESTIONS"
+      >
+        الأسئلة
+      </a>
+
+      <a
+        href="#chapters"
+        data-i18n="CHAPTERS"
+      >
+        الفصول
+      </a>
+
+      <a
+        href="#contact"
+        data-i18n="CONTACT"
+      >
+        تواصل معنا
+      </a>
+
     </nav>
+
   </div>
+
 </header>
 
+
 <main id="home">
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
 <section class="hero">
- <div class="container hero-grid">
-  <div class="hero-copy">
-   <div class="hero-kicker"><span></span><span data-i18n="CASE_FILE">ملف رقم 001 · عالم الدراسة</span></div>
-   <h1>عالم<br><em>الدراسة</em></h1>
-   <p class="hero-lead" data-i18n="HERO_LEAD">مكان للأسئلة،<br>الإجابات والشروحات.</p>
-   <p class="hero-description" data-i18n="HERO_DESC">منصة تعليمية مرتبة علشان تراجع أسئلتك بسرعة ومن غير زحمة.</p>
-   <a class="btn btn-gold" href="#questions"><span data-i18n="EXPLORE">استكشف الأسئلة</span><b>↙</b></a>
+
+  <div class="container hero-grid">
+
+
+    <div class="hero-copy">
+
+      <div class="hero-kicker">
+
+        <span></span>
+
+        <span data-i18n="CASE_FILE">
+          ملف رقم 001 · عالم الدراسة
+        </span>
+
+      </div>
+
+
+      <h1>
+
+        عالم
+
+        <br>
+
+        <em>
+          الدراسة
+        </em>
+
+      </h1>
+
+
+      <p
+        class="hero-lead"
+        data-i18n="HERO_LEAD"
+      >
+
+        مكان للأسئلة،
+        <br>
+        الإجابات والشروحات.
+
+      </p>
+
+
+      <p
+        class="hero-description"
+        data-i18n="HERO_DESC"
+      >
+
+        منصة تعليمية مرتبة علشان تراجع أسئلتك بسرعة ومن غير زحمة.
+
+      </p>
+
+
+      <a
+        class="btn btn-gold"
+        href="#questions"
+      >
+
+        <span data-i18n="EXPLORE">
+          استكشف الأسئلة
+        </span>
+
+        <b>
+          ↙
+        </b>
+
+      </a>
+
+    </div>
+
+
+    <div class="hero-file">
+
+      <div class="file-card">
+
+        <div class="file-top">
+
+          <span>
+            STUDY ARCHIVE
+          </span>
+
+          <span>
+            NO. 001
+          </span>
+
+        </div>
+
+
+        <div class="file-seal">
+          ع
+        </div>
+
+
+        <div class="file-stamp">
+
+          OPEN
+          <br>
+          ARCHIVE
+
+        </div>
+
+
+        <div class="file-lines">
+
+          <span>
+            QUESTIONS
+          </span>
+
+          <i></i>
+
+          <span>
+            ANSWERS
+          </span>
+
+          <i></i>
+
+          <span>
+            EXPLANATIONS
+          </span>
+
+          <i></i>
+
+          <span>
+            REFERENCE
+          </span>
+
+          <i></i>
+
+        </div>
+
+
+        <div class="file-bottom">
+
+          EST. 2026 · عالم الدراسة
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
-  <div class="hero-file">
-   <div class="file-card"><div class="file-top"><span>STUDY ARCHIVE</span><span>NO. 001</span></div><div class="file-seal">ع</div><div class="file-stamp">OPEN<br>ARCHIVE</div><div class="file-lines"><span>QUESTIONS</span><i></i><span>ANSWERS</span><i></i><span>EXPLANATIONS</span><i></i><span>REFERENCE</span><i></i></div><div class="file-bottom">EST. 2026 · عالم الدراسة</div></div>
-  </div>
- </div>
+
 </section>
 
-<section class="stats"><div class="container stats-grid">
- <article><strong id="totalQuestions">0</strong><span data-i18n="TOTAL_QUESTIONS">إجمالي الأسئلة</span></article>
- <article><strong id="totalChapters">0</strong><span data-i18n="TOTAL_CHAPTERS">إجمالي الفصول</span></article>
- <article><strong id="totalCategories">0</strong><span data-i18n="TOTAL_CATEGORIES">إجمالي التصنيفات</span></article>
-</div></section>
 
-<section class="section questions-section" id="questions">
- <div class="container">
-  <div class="section-heading"><div><p class="eyebrow" data-i18n="MAIN_FILES">THE MAIN FILES</p><h2 data-i18n="QUESTIONS">الأسئلة</h2></div><span class="section-number">01 / 04</span></div>
-  <div class="archive-toolbar">
-   <label class="search-box"><span>⌕</span><input id="searchInput" type="search" autocomplete="off" data-i18n-placeholder="SEARCH_PLACEHOLDER" placeholder="ابحث في الأسئلة..."></label>
-   <div class="filter-row"><select id="chapterFilter"><option value="">كل الفصول</option></select><div class="category-filter-wrap"><button id="categoryBubbleBtn" class="category-bubble-btn" type="button">التصنيفات <span>⌄</span></button><div id="categoryBubble" class="category-bubble" aria-hidden="true"></div><select id="categoryFilter" class="visually-hidden-select"><option value="">كل التصنيفات</option></select></div></div>
+<!-- =====================================================
+     STATS
+     ===================================================== -->
+
+<section class="stats">
+
+  <div class="container stats-grid">
+
+    <article>
+
+      <strong id="totalQuestions">
+        0
+      </strong>
+
+      <span data-i18n="TOTAL_QUESTIONS">
+        إجمالي الأسئلة
+      </span>
+
+    </article>
+
+
+    <article>
+
+      <strong id="totalChapters">
+        0
+      </strong>
+
+      <span data-i18n="TOTAL_CHAPTERS">
+        إجمالي الفصول
+      </span>
+
+    </article>
+
+
+    <article>
+
+      <strong id="totalCategories">
+        0
+      </strong>
+
+      <span data-i18n="TOTAL_CATEGORIES">
+        إجمالي التصنيفات
+      </span>
+
+    </article>
+
   </div>
-  <div class="result-bar"><span id="resultCount">0</span><span data-i18n="RESULTS">نتيجة</span><button id="clearFilters" class="clear-btn" type="button" data-i18n="CLEAR_FILTERS">مسح الفلاتر</button></div>
-  <div id="questionsState" class="state-message">جاري تحميل الأسئلة...</div>
-  <div id="questionsGrid" class="questions-feed"></div>
- </div>
+
 </section>
 
 
-  <!-- =====================================================
-       LEO AI — FLOATING ASSISTANT
-  ====================================================== -->
-  <button id="leoFab" class="leo-fab" type="button" aria-label="اسأل ليو" title="اسأل ليو">
-    <span class="leo-fab-orbit"></span>
-    <span class="leo-fab-icon">ل</span>
-    <span class="leo-fab-label">اسأل ليو</span>
-  </button>
+<!-- =====================================================
+     QUESTIONS
+     ===================================================== -->
 
-  <div id="leoOverlay" class="leo-overlay" aria-hidden="true">
-    <div class="leo-backdrop" data-leo-close></div>
-    <aside class="leo-panel" role="dialog" aria-modal="true" aria-labelledby="leoTitle">
-      <div class="leo-panel-head">
-        <div class="leo-brand">
-          <div class="leo-avatar">ل</div>
-          <div>
-            <strong id="leoTitle">ليو</strong>
-            <span>اسأل ليو</span>
-          </div>
+<section
+  class="section questions-section"
+  id="questions"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+      <div>
+
+        <p
+          class="eyebrow"
+          data-i18n="MAIN_FILES"
+        >
+          THE MAIN FILES
+        </p>
+
+        <h2 data-i18n="QUESTIONS">
+          الأسئلة
+        </h2>
+
+      </div>
+
+      <span class="section-number">
+        01 / 04
+      </span>
+
+    </div>
+
+
+    <div class="archive-toolbar">
+
+
+      <label class="search-box">
+
+        <span>
+          ⌕
+        </span>
+
+        <input
+          id="searchInput"
+          type="search"
+          autocomplete="off"
+          data-i18n-placeholder="SEARCH_PLACEHOLDER"
+          placeholder="ابحث في الأسئلة..."
+        >
+
+      </label>
+
+
+      <div class="filter-row">
+
+
+        <select id="chapterFilter">
+
+          <option value="">
+            كل الفصول
+          </option>
+
+        </select>
+
+
+        <div class="category-filter-wrap">
+
+
+          <button
+            id="categoryBubbleBtn"
+            class="category-bubble-btn"
+            type="button"
+          >
+
+            التصنيفات
+
+            <span>
+              ⌄
+            </span>
+
+          </button>
+
+
+          <div
+            id="categoryBubble"
+            class="category-bubble"
+            aria-hidden="true"
+          ></div>
+
+
+          <select
+            id="categoryFilter"
+            class="visually-hidden-select"
+          >
+
+            <option value="">
+              كل التصنيفات
+            </option>
+
+          </select>
+
+
         </div>
-        <div class="leo-head-actions">
-          <button type="button" id="aiNewChat" class="ai-new-chat">محادثة جديدة</button>
-          <button type="button" class="leo-close" data-leo-close aria-label="إغلاق">×</button>
-        </div>
+
       </div>
 
-      <div id="leoQuestionContext" class="leo-question-context">
-        <span>السؤال الحالي</span>
-        <strong>لم يتم اختيار سؤال بعد</strong>
-      </div>
+    </div>
 
-      <div id="homeAiMessages" class="ai-messages">
-        <div class="ai-message ai-message-bot">
-          <div class="ai-message-label">ليو</div>
-          <div class="ai-message-text">أهلًا! أنا ليو. اختر «اسأل ليو» بجانب أي سؤال، وأنا هشرح لك السؤال المعروض خطوة بخطوة.</div>
-        </div>
-      </div>
 
-      <div id="homeAiTyping" class="ai-typing hidden">
-        <span></span><span></span><span></span>
-        <label>ليو بيجهز الإجابة...</label>
-      </div>
+    <div class="result-bar">
 
-      <div class="ai-quick-actions">
-        <button type="button" data-ai-home-prompt="اشرح لي السؤال بطريقة بسيطة">اشرح السؤال</button>
-        <button type="button" data-ai-home-prompt="أنا مش فاهم السؤال، وضحه لي">أنا مش فاهم</button>
-        <button type="button" data-ai-home-prompt="حل السؤال مع توضيح الخطوات">حل السؤال</button>
-      </div>
+      <span id="resultCount">
+        0
+      </span>
 
-      <div class="ai-composer">
-        <textarea id="homeAiInput" rows="1" placeholder="اسأل ليو عن السؤال..." autocomplete="off"></textarea>
-        <button type="button" id="homeAiSend" class="ai-send-button">إرسال</button>
-        <button type="button" id="homeAiStop" class="ai-stop-button hidden">إيقاف</button>
-      </div>
-      <div class="ai-footer-note">ليو · اسأل ليو</div>
-    </aside>
+      <span data-i18n="RESULTS">
+        نتيجة
+      </span>
+
+      <button
+        id="clearFilters"
+        class="clear-btn"
+        type="button"
+        data-i18n="CLEAR_FILTERS"
+      >
+        مسح الفلاتر
+      </button>
+
+    </div>
+
+
+    <div
+      id="questionsState"
+      class="state-message"
+    >
+      جاري تحميل الأسئلة...
+    </div>
+
+
+    <div
+      id="questionsGrid"
+      class="questions-feed"
+    ></div>
+
   </div>
 
-<section class="section chapters-section" id="chapters">
- <div class="container"><div class="section-heading"><div><p class="eyebrow">INDEX OF FILES</p><h2 data-i18n="CHAPTERS">الفصول</h2></div><span class="section-number">02 / 04</span></div><div id="chaptersGrid" class="chapters-grid"></div></div>
 </section>
 
-<section class="section about-section"><div class="container about-grid"><div><p class="eyebrow" data-i18n="ABOUT">عن المنصة</p><h2>كل سؤال<br>له مكان.</h2></div><p data-i18n="ABOUT_TEXT">كل سؤال بيتحفظ مع عنوانه وإجابته وشرحه وتصنيفه، ومعاه صورة أو فيديو لو متاح. الهدف إن المراجعة تبقى أسرع وأوضح.</p></div></section>
 
-<section class="section contact-section" id="contact"><div class="container contact-box"><div><p class="eyebrow" data-i18n="FINAL_NOTE">FINAL NOTE</p><h2 data-i18n="FOUND_PROBLEM">وجدت مشكلة؟</h2><p data-i18n="CONTACT_TEXT">لو لقيت خطأ في سؤال أو عندك مشكلة في المحتوى، تواصل معنا مباشرة.</p></div><div id="contactActions" class="contact-actions"><span class="state-message">واتساب أو بريد إلكتروني</span></div></div></section>
+<!-- =====================================================
+     LEO AI
+     ===================================================== -->
+
+<button
+  id="leoFab"
+  class="leo-fab"
+  type="button"
+  aria-label="اسأل ليو"
+  title="اسأل ليو"
+>
+
+  <span class="leo-fab-orbit"></span>
+
+  <span class="leo-fab-icon">
+
+    <img
+      src="assets/images/ai-avatar.png"
+      alt="AI"
+    >
+
+  </span>
+
+  <span class="leo-fab-label">
+    اسأل ليو
+  </span>
+
+</button>
+
+
+<div
+  id="leoOverlay"
+  class="leo-overlay"
+  aria-hidden="true"
+>
+
+
+  <div
+    class="leo-backdrop"
+    data-leo-close
+  ></div>
+
+
+  <aside
+    class="leo-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="leoTitle"
+  >
+
+
+    <div class="leo-panel-head">
+
+
+      <div class="leo-brand">
+
+
+        <div class="leo-avatar">
+
+          <img
+            src="assets/images/ai-avatar.png"
+            alt="ليو AI"
+          >
+
+        </div>
+
+
+        <div>
+
+          <strong id="leoTitle">
+            ليو
+          </strong>
+
+          <span>
+            اسأل ليو
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="leo-head-actions">
+
+
+        <button
+          type="button"
+          id="aiNewChat"
+          class="ai-new-chat"
+        >
+          محادثة جديدة
+        </button>
+
+
+        <button
+          type="button"
+          class="leo-close"
+          data-leo-close
+          aria-label="إغلاق"
+        >
+          ×
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="leoQuestionContext"
+      class="leo-question-context"
+    >
+
+      <span>
+        السؤال الحالي
+      </span>
+
+      <strong>
+        لم يتم اختيار سؤال بعد
+      </strong>
+
+    </div>
+
+
+    <div
+      id="homeAiMessages"
+      class="ai-messages"
+    >
+
+      <div class="ai-message ai-message-bot">
+
+        <div class="ai-message-label">
+          ليو
+        </div>
+
+        <div class="ai-message-text">
+
+          أهلًا! أنا ليو.
+          اختر «اسأل ليو» بجانب أي سؤال،
+          وأنا هشرح لك السؤال المعروض خطوة بخطوة.
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="homeAiTyping"
+      class="ai-typing hidden"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+      <label>
+        ليو بيجهز الإجابة...
+      </label>
+
+    </div>
+
+
+    <div class="ai-quick-actions">
+
+      <button
+        type="button"
+        data-ai-home-prompt="اشرح لي السؤال بطريقة بسيطة"
+      >
+        اشرح السؤال
+      </button>
+
+
+      <button
+        type="button"
+        data-ai-home-prompt="أنا مش فاهم السؤال، وضحه لي"
+      >
+        أنا مش فاهم
+      </button>
+
+
+      <button
+        type="button"
+        data-ai-home-prompt="حل السؤال مع توضيح الخطوات"
+      >
+        حل السؤال
+      </button>
+
+    </div>
+
+
+    <div class="ai-composer">
+
+      <textarea
+        id="homeAiInput"
+        rows="1"
+        placeholder="اسأل ليو عن السؤال..."
+        autocomplete="off"
+      ></textarea>
+
+
+      <button
+        type="button"
+        id="homeAiSend"
+        class="ai-send-button"
+      >
+        إرسال
+      </button>
+
+
+      <button
+        type="button"
+        id="homeAiStop"
+        class="ai-stop-button hidden"
+      >
+        إيقاف
+      </button>
+
+    </div>
+
+
+    <div class="ai-footer-note">
+      ليو · اسأل ليو
+    </div>
+
+
+  </aside>
+
+</div>
+
+
+<!-- =====================================================
+     CHAPTERS
+     ===================================================== -->
+
+<section
+  class="section chapters-section"
+  id="chapters"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+      <div>
+
+        <p class="eyebrow">
+          INDEX OF FILES
+        </p>
+
+        <h2 data-i18n="CHAPTERS">
+          الفصول
+        </h2>
+
+      </div>
+
+      <span class="section-number">
+        02 / 04
+      </span>
+
+    </div>
+
+
+    <div
+      id="chaptersGrid"
+      class="chapters-grid"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+     ===================================================== -->
+
+<section class="section about-section">
+
+  <div class="container about-grid">
+
+
+    <div>
+
+      <p
+        class="eyebrow"
+        data-i18n="ABOUT"
+      >
+        عن المنصة
+      </p>
+
+      <h2>
+        كل سؤال
+        <br>
+        له مكان.
+      </h2>
+
+    </div>
+
+
+    <p data-i18n="ABOUT_TEXT">
+
+      كل سؤال بيتحفظ مع عنوانه وإجابته وشرحه وتصنيفه،
+      ومعاه صورة أو فيديو لو متاح.
+      الهدف إن المراجعة تبقى أسرع وأوضح.
+
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     CONTACT
+     ===================================================== -->
+
+<section
+  class="section contact-section"
+  id="contact"
+>
+
+  <div class="container contact-box">
+
+
+    <div>
+
+      <p
+        class="eyebrow"
+        data-i18n="FINAL_NOTE"
+      >
+        FINAL NOTE
+      </p>
+
+      <h2 data-i18n="FOUND_PROBLEM">
+        وجدت مشكلة؟
+      </h2>
+
+      <p data-i18n="CONTACT_TEXT">
+
+        لو لقيت خطأ في سؤال أو عندك مشكلة في المحتوى،
+        تواصل معنا مباشرة.
+
+      </p>
+
+    </div>
+
+
+    <div
+      id="contactActions"
+      class="contact-actions"
+    >
+
+      <span class="state-message">
+        واتساب أو بريد إلكتروني
+      </span>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
 </main>
 
-<footer class="site-footer"><div class="container footer-grid"><div><strong>عالم الدراسة</strong><span id="footerText">© 2026 عالم الدراسة</span></div><a href="#contact" data-i18n="CONTACT">تواصل معنا</a></div></footer>
-<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+
+    <div>
+
+      <strong>
+        عالم الدراسة
+      </strong>
+
+      <span id="footerText">
+        © 2026 عالم الدراسة
+      </span>
+
+    </div>
+
+
+    <a
+      href="#contact"
+      data-i18n="CONTACT"
+    >
+      تواصل معنا
+    </a>
+
+
+  </div>
+
+</footer>
+
+
+<div
+  id="toastRegion"
+  class="toast-region"
+  aria-live="polite"
+></div>
+
+
+<!-- =====================================================
+     SCRIPTS
+     ===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="i18n.js"></script><script src="config.js"></script><script src="app.js"></script>
-</body></html>
+
+<script src="i18n.js"></script>
+
+<script src="config.js"></script>
+
+<script src="app.js"></script>
+
+
+<!-- =====================================================
+     PASSWORD / VIDEO SCRIPT
+     ===================================================== -->
+
+<script>
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const gate =
+      document.getElementById(
+        "passwordGate"
+      );
+
+    const form =
+      document.getElementById(
+        "passwordForm"
+      );
+
+    const input =
+      document.getElementById(
+        "sitePassword"
+      );
+
+    const error =
+      document.getElementById(
+        "passwordError"
+      );
+
+    const toggle =
+      document.getElementById(
+        "passwordToggle"
+      );
+
+    const video =
+      document.getElementById(
+        "lockBackgroundVideo"
+      );
+
+
+    if (!gate || !form || !input) {
+      return;
+    }
+
+
+    /* ----------------------------------
+       VIDEO
+       ---------------------------------- */
+
+    if (video) {
+
+      video.muted = true;
+
+      const play =
+        video.play();
+
+      if (play) {
+
+        play.catch(
+          () => {}
+        );
+
+      }
+
+    }
+
+
+    /* ----------------------------------
+       PREVIOUS LOGIN
+       ---------------------------------- */
+
+    if (
+      sessionStorage.getItem(
+        "study_world_unlocked"
+      ) === "true"
+    ) {
+
+      gate.remove();
+
+      return;
+
+    }
+
+
+    /* ----------------------------------
+       SHOW PASSWORD
+       ---------------------------------- */
+
+    if (toggle) {
+
+      toggle.addEventListener(
+        "click",
+        () => {
+
+          const hidden =
+            input.type === "password";
+
+          input.type =
+            hidden
+              ? "text"
+              : "password";
+
+          input.focus();
+
+        }
+      );
+
+    }
+
+
+    /* ----------------------------------
+       LOGIN
+       ---------------------------------- */
+
+    form.addEventListener(
+      "submit",
+      (event) => {
+
+        event.preventDefault();
+
+
+        const password =
+          input.value.trim();
+
+
+        if (password === "2010") {
+
+
+          sessionStorage.setItem(
+            "study_world_unlocked",
+            "true"
+          );
+
+
+          if (error) {
+            error.textContent = "";
+          }
+
+
+          gate.style.opacity = "0";
+
+          gate.style.transform =
+            "scale(1.04)";
+
+          gate.style.pointerEvents =
+            "none";
+
+
+          if (video) {
+
+            video.style.transition =
+              "opacity .6s ease";
+
+            video.style.opacity =
+              "0";
+
+          }
+
+
+          setTimeout(
+            () => {
+              gate.remove();
+            },
+            700
+          );
+
+
+          return;
+
+        }
+
+
+        /* WRONG PASSWORD */
+
+        if (error) {
+
+          error.textContent =
+            "كلمة المرور غير صحيحة";
+
+        }
+
+
+        input.value = "";
+
+        input.focus();
+
+
+        input.animate(
+
+          [
+            {
+              transform:
+                "translateX(0)"
+            },
+
+            {
+              transform:
+                "translateX(-9px)"
+            },
+
+            {
+              transform:
+                "translateX(9px)"
+            },
+
+            {
+              transform:
+                "translateX(-6px)"
+            },
+
+            {
+              transform:
+                "translateX(0)"
+            }
+
+          ],
+
+          {
+            duration: 360,
+            easing: "ease-out"
+          }
+
+        );
+
+      }
+    );
+
+  }
+);
+
+</script>
+
+
+</body>
+
+</html>
