@@ -87,6 +87,22 @@ const state = {
   }
 
 
+  /* -----------------------------------------
+     NUMERIC PASSWORD INPUT
+  ----------------------------------------- */
+
+  input.setAttribute("inputmode", "numeric");
+  input.setAttribute("pattern", "[0-9]*");
+  input.setAttribute("autocomplete", "off");
+
+  input.addEventListener("input", () => {
+    const digitsOnly = input.value.replace(/\D/g, "");
+    if (input.value !== digitsOnly) {
+      input.value = digitsOnly;
+    }
+  });
+
+
   /*
     مهم:
     نفس المفتاح يستخدمه الموقع كله.
@@ -142,6 +158,11 @@ const state = {
     document.body.classList.remove(
       "password-locked"
     );
+
+    if (video) {
+      video.pause();
+      video.style.visibility = "hidden";
+    }
 
     return;
 
@@ -210,6 +231,11 @@ const state = {
         document.body.classList.remove(
           "password-locked"
         );
+
+        if (video) {
+          video.pause();
+          video.style.visibility = "hidden";
+        }
 
 
         setTimeout(
